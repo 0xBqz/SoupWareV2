@@ -13,10 +13,10 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/0xBqz/SoupWareV2/main
 ### 🍜 Library And Ui 
 
 ```lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/0xBqz/SoupWareV2/main/Scripts/Source.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/0xBqz/SoupWareV2/main/Library/Library.lua"))()
 ```
 
-### 💖 Support
+### 💖 Supports
 
 - ScriptWare
 - Krnl
