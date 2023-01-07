@@ -10,4 +10,18 @@ heres the script. paste the this in your executor and download it so the script 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/0xBqz/SoupWareV2/main/Scripts/Source.lua"))()
 ```
 
-and u will found more information about the UI-Library right [**Here**](https://github.com/0xBqz/SoupWareV2/blob/main/Library/README.md)
+### 🍜 Library And Ui 
+
+```lua
+loadstring(game:HttpGet("https://raw.githubusercontent.com/0xBqz/SoupWareV2/main/Scripts/Source.lua"))()
+```
+
+### 💖 Support
+
+- ScriptWare
+- Krnl
+- Synapse X
+
+### 🍵 Interface Showcase
+
+![image](https://user-images.githubusercontent.com/97072588/211168490-f1899303-86b4-4d63-a8a2-8c9b85b91eb4.png)
