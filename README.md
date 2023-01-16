@@ -23,6 +23,14 @@ List of games avalible [**Here**](https://github.com/0xBqz/SoupWareV2/tree/main/
 
 Also SWv2 hads a diferent UI-library to change the configuration for your scripts and will automaticaly change all the settings. for additional info click [**Here**](https://github.com/0xBqz/SoupWareV2/tree/main/configlibrary)
 
+### ⚠ This script is on a very early beta. now u can check things ive make
+
+ - [x] Main UI-Library
+ - [x] Config UI-Library
+ - [ ] First Script released
+ 
+ to check the library and his functions click [**Here**]()
+
 ### 🛠 Supports:
  - [x] Script-Ware
  - [x] Synapse X
