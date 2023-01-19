@@ -1,5 +1,1 @@
-### Soup-Ware V2
-[**repository**](https://github.com/0xBqz/SoupWareV2)
-```lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/0xBqz/SoupWareV2/main/Scripts/Source.lua"))()
-```
+![Soup-Ware V2](https://user-images.githubusercontent.com/97072588/213352875-e405c4e6-ee82-4766-ba1d-e8e804f0b6dd.png)
