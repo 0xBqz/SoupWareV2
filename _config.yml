@@ -1,9 +1,0 @@
-site_name: SoupWareV2
-site_description: SoupWare'sDocs
-site_author: 0xBqz.
-site_url: https://0xBqz.github.io/SoupWareV2/
-site_remote_theme: pages-themes/hacker@v0.2.0
-
-theme: jekyll-theme-hacker
-nav:
-    - Home: index.md
