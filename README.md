@@ -5,7 +5,7 @@
 <h1 align="center"> # Soup-Ware V2.
 
 ### 👋 Welcome!
-Soup-Ware V2 is a stylish, open source, easy to use scripts for multiple games
+Soup-Ware V2 is a stylish, open source, easy to use scripts for multiple game, Script main web page [**Soup-Ware web**](https://0xbqz.github.io/SoupWareV2/)
 
 this script is the sequel of [**Soup-Ware V1**](https://github.com/0xBqz/SoupWare) which was the first somewhat good script ive made and help me to  make the script ive allways wanted to make. now it had a revamp-UI, Clean Open Source and even a UI library that i coudnt made before because of my lack of experience. just to make something that everybody likes and something i would rather use and be proud of it :)
 
