@@ -48,6 +48,10 @@ function Library:Window(Title, Path)
     B_Frame.BackgroundColor3 = Color3.fromRGB(34, 34, 34)
     B_Frame.Position = UDim2.new(-0.00175701198, 0, 0.00150996435, 0)
     B_Frame.Size = UDim2.new(0, 183, 0, 45)
+    
+    local UICorner_2 = Instance.new("UICorner")
+    UICorner_2.CornerRadius = UDim.new(0, 15)
+    UICorner_2.Parent = B_Frame
 
     local B_Frame_2 = Instance.new("Frame")
     B_Frame_2.Parent = B_Frame
@@ -67,7 +71,6 @@ function Library:Window(Title, Path)
     local B_Invis = Instance.new("Frame")
     B_Invis.Name = "invis"
     B_Invis.Parent = Frame
-    B_Invis.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     B_Invis.BackgroundTransparency = 1.000
     B_Invis.Size = UDim2.new(0, 179, 0, 45)
 
@@ -109,10 +112,6 @@ function Library:Window(Title, Path)
     local UICorner = Instance.new("UICorner")
     UICorner.CornerRadius = UDim.new(0, 15)
     UICorner.Parent = Frame
-
-    local UICorner_2 = Instance.new("UICorner")
-    UICorner_2.CornerRadius = UDim.new(0, 15)
-    UICorner_2.Parent = B_Frame
 
     local UIListLayout = Instance.new("UIListLayout")
     UIListLayout.Parent = B_Frame
@@ -232,6 +231,12 @@ function Library:Window(Title, Path)
         toggle.TextColor3 = Color3.fromRGB(0, 0, 0)
         toggle.TextSize = 14.000
 
+        local Frame = Instance.new("Frame")
+        Frame.Parent = toggle
+        Frame.BackgroundColor3 = Color3.fromRGB(36, 36, 36)
+        Frame.Position = UDim2.new(0.0149999997, 0, 0.0780000016, 0)
+        Frame.Size = UDim2.new(0, 158, 0, 32)
+
         local Title = Instance.new("TextLabel")
         Title.Parent = toggle
         Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -244,12 +249,6 @@ function Library:Window(Title, Path)
         Title.TextSize = 17.000
         Title.TextXAlignment = Enum.TextXAlignment.Left
 
-        local Frame = Instance.new("Frame")
-        Frame.Parent = toggle
-        Frame.BackgroundColor3 = Color3.fromRGB(36, 36, 36)
-        Frame.Position = UDim2.new(0.0149999997, 0, 0.0780000016, 0)
-        Frame.Size = UDim2.new(0, 158, 0, 32)
-
         local Dot = Instance.new("Frame")
         Dot.Parent = toggle
         Dot.Size = UDim2.new(0, 15, 0, 15)
@@ -259,8 +258,6 @@ function Library:Window(Title, Path)
         Bar.BackgroundColor3 = Color3.fromRGB(180, 180, 180)
         Bar.Position = UDim2.new(0.727848113, 0, 0.392700195, 0)
         Bar.Size = UDim2.new(0, 34, 0, 5)
-
-
 
         local UICorner = Instance.new("UICorner")
         UICorner.CornerRadius = UDim.new(0, 5)
