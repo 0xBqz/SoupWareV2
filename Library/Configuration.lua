@@ -203,10 +203,8 @@ function Library:Window(Title, Path)
 		local UICorner_2 = Instance.new("UICorner")
         UICorner_2.Parent = Frame
 
-		local settings = {}
-
 		function settings:execute()
-			pcall(settings.Callback)
+            pcall(settings.Callback)
 		end
 
         button.MouseButton1Click:Connect(function()
