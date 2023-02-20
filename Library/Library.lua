@@ -4,14 +4,9 @@ for _,v in pairs(game:FindFirstChildWhichIsA("CoreGui"):GetDescendants()) do
     end
 end
 
-local visible, transparency = false, false
-
 if not isfolder("SoupWareV2") then makefolder("SoupWareV2") end
 
 local TweenService = game:GetService("TweenService")
-local HttpService = game:GetService("HttpService")
-local RunService = game:GetService("RunService")
-local Players = game:GetService("Players")
 local TextService = game:GetService('TextService')
 local copy = setclipboard or toclipboard
 
@@ -20,10 +15,8 @@ local ITEMS = {}
 ITEMS.Service = {
 	["Players"] = game:GetService("Players"),
 	["UserInputService"] = game:GetService("UserInputService"),
-	["HttpService"] = game:GetService("HttpService"),
 	["Player"] = game:GetService("Players").LocalPlayer
 }
-
 
 local SoupWareV2 = Instance.new("ScreenGui")
 SoupWareV2.Name = "SoupWareV2"
@@ -35,13 +28,26 @@ local function IsRunning()
 	return SoupWareV2.Parent == game:GetService("CoreGui")
 end
 
------------------------------------------------------------
-
 function ITEMS:AddConnection(Signal, Function)
-	if IsRunning then
-		table.insert(ITEMS.connections, Signal:Connect(Function))
+	if IsRunning() then
+		local SignalConnect = Signal:Connect(Function)
+		table.insert(ITEMS.Connections, SignalConnect)
+
+		return SignalConnect
 	end
 end
+
+task.spawn(function()
+	while (IsRunning()) do
+		wait()
+	end
+
+	for _, Connection in next, ITEMS.Connections do
+		Connection:Disconnect()
+	end
+end)
+
+-----------------------------------------------------------
 
 local function drag(Frame, dragSpeed)
 	local dragToggle, dragInput, dragStart, dragPos, startPos
@@ -104,7 +110,6 @@ local Config = loadstring(game:HttpGet("https://raw.githubusercontent.com/0xBqz/
 local Gui = Config:Window("configuration", "Main", true)
 
 local Interface = Gui:getframe()
-Interface.Visible = true
 Interface.Parent = SoupWareV2
 
 drag(Interface)
@@ -130,7 +135,7 @@ end
 Gui:text("Gui:")
 
 local StartInvisible = Gui:toggle({Name = "start invisible"})
-local StartTransparency = Gui:toggle({Name = "transparency"})
+local StartTransparency = Gui:toggle({Name = "start transparent"})
 
 -----------------------------------------------------------
 
@@ -378,7 +383,8 @@ for _,Obj in pairs(TransparencyItems) do
 end
 
 local transparency = StartTransparency:getvalue()
-local moving = false
+local visible = not StartInvisible:getvalue()
+local enabled = visible
 
 -----------
 
@@ -490,13 +496,13 @@ function ITEMS:Visible(time, value, buttons)
 	end
 end
 
-if not StartInvisible:getvalue() then
+local moving = true
+
+if visible then
 	ITEMS:Visible(1, true, false)
 end
 
-local enabled = not StartInvisible:getvalue()
-
-if transparency then
+if transparency and visible then
 	ITEMS:TRANS(0.5, true, true)
 end
 
@@ -505,14 +511,23 @@ end
 Gui:keybind({
 	Name = "visible",
 	Callback = function()
-		ITEMS:Visible(0.5, not enabled)
+		if moving then
+			moving = false
 
+			ITEMS:Visible(enabled and 0.4 or 0.5, not enabled)
+			enabled = not enabled
 
-		moving = false
-		enabled = not enabled
+			wait(enabled and 0.4 or 0.6)
+
+			moving = true
+
+			if enabled then
+				ITEMS:TRANS(0.3, transparency, true)
+			end
+		end
 	end
 })
---]]
+
 Gui:keybind({
 	Name = "opacity",
 	Callback = function()
@@ -712,7 +727,6 @@ local function simbol(simbol)
 	return Simbol
 end
 
-
 --config
 
 local function SetButton(settings)
@@ -744,12 +758,14 @@ local function SetButton(settings)
 	end
 
 	function settings:Execute()
-		if settings.toggle then
-			value = not value
-
-			settings:set(value, true)
-		else
-			pcall(settings.Callback)
+		if IsRunning() then
+			if settings.toggle then
+				value = not value
+	
+				settings:set(value, true)
+			else
+				pcall(settings.Callback)
+			end
 		end
 	end
 
@@ -951,7 +967,8 @@ function ITEMS:toggle(settings)
 	for _,Obj in pairs(TransparencyObjects) do
 		Obj[ReturnProperty(Obj)] = 1
 
-		if not StartInvisible:getvalue() then
+		if StartInvisible:getvalue() then
+		else
 			if transparency then
 				TweenService:Create(Obj, TweenInfo.new(0.5), {[ReturnProperty(Obj)] = 0.5}):Play()
 			else
