@@ -1063,7 +1063,9 @@ function ITEMS:GetDetail(settings)
 		return text.Text
 	end
 
-	pcall(settings:set(tostring(texts)))
+	pcall(function()
+		settings:set(tostring(texts))
+	end)
 
 	Frame.BackgroundTransparency = 1
 	text.TextTransparency = 1
