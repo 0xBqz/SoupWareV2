@@ -125,7 +125,7 @@ function Library:Window(Title, Path)
     close.MouseButton1Click:Connect(function()
         Frame.Visible = false
     end)
-
+    
 	--start
 
 	local UI = {}
@@ -383,6 +383,16 @@ function Library:Window(Title, Path)
 
 		local Key = ShowKey
 
+        function settings:set(keybind)
+            pcall(function()
+                Key = keybind.KeyCode.Name
+
+                Input.Text = keybind and Enum.KeyCode[keybind].Name or ". . ." 
+
+                save()
+            end)
+        end
+
 		keybind.MouseButton1Click:Connect(function()
 			Input.Text = ". . ."
 			local inputwait = game:GetService("UserInputService").InputBegan:wait()
@@ -405,6 +415,8 @@ function Library:Window(Title, Path)
 		end)
 
 		resize()
+
+        return settings
 	end
 
     --get frame
@@ -412,6 +424,7 @@ function Library:Window(Title, Path)
     function UI:getframe()
         return Frame
     end
+    
     return UI
 end
 
