@@ -42,15 +42,17 @@ task.spawn(function()
 		wait()
 	end
 
-	for _, Connection in next, ITEMS.Connections do
-		Connection:Disconnect()
+	if next(ITEMS.Connections) then
+		for _, Connection in next, ITEMS.Connections do
+			Connection:Disconnect()
+		end
 	end
 end)
 
 -----------------------------------------------------------
 
 local function drag(Frame, dragSpeed)
-	local dragToggle, dragInput, dragStart, dragPos, startPos
+	local dragToggle, dragInput, dragStart, startPos
 	local dragSpeed = dragSpeed or 0.15
 
 	local function updateInput(input)
@@ -500,10 +502,9 @@ local moving = true
 
 if visible then
 	ITEMS:Visible(1, true, false)
-end
-
-if transparency and visible then
-	ITEMS:TRANS(0.5, true, true)
+	if transparency then
+		ITEMS:TRANS(0.5, true, true)	
+	end
 end
 
 -----------
@@ -769,6 +770,10 @@ local function SetButton(settings)
 		end
 	end
 
+	function settings:Get()
+		return value
+	end
+
 	Lib:button({
 		Name = "execute",
 		Callback = function()
@@ -800,7 +805,7 @@ local function SetButton(settings)
 
 	scroll.CanvasSize = UDim2.new(0, 0, 0, UIGridLayout.AbsoluteContentSize.Y)
 
-	return settings
+	return settings, value
 end
 
 --get:
@@ -1034,7 +1039,15 @@ function ITEMS:GetDetail(settings)
 	text.ZIndex = 6
 	text.TextXAlignment = Enum.TextXAlignment.Left
 
-	local texts = settings.Name or settings[1]
+	local texts = ""
+
+	if typeof(settings) == "string" then
+		texts = settings
+		
+		settings = {}
+	else
+		texts = settings.Name or settings[1]
+	end
 
 	function settings:visible(value)
 		Frame.Visible = value
@@ -1050,9 +1063,7 @@ function ITEMS:GetDetail(settings)
 		return text.Text
 	end
 
-	pcall(function()
-		settings:set(texts)
-	end)
+	pcall(settings:set(tostring(texts)))
 
 	Frame.BackgroundTransparency = 1
 	text.TextTransparency = 1
