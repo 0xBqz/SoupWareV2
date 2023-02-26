@@ -384,13 +384,19 @@ function Library:Window(Title, Path)
 		local Key = ShowKey
 
         function settings:set(keybind)
-            pcall(function()
-                Key = keybind.KeyCode.Name
+            if keybind then
+                pcall(function()
+                    Key = keybind.KeyCode.Name
+    
+                    Input.Text = keybind and Enum.KeyCode[keybind].Name or ". . ." 
+                end)
+            else
+                Key = nil
 
-                Input.Text = keybind and Enum.KeyCode[keybind].Name or ". . ." 
+                Input.Text = ". . ."
+            end
 
-                save()
-            end)
+            save()
         end
 
 		keybind.MouseButton1Click:Connect(function()
