@@ -15,7 +15,38 @@ local ITEMS = {}
 ITEMS.Service = {
 	["Players"] = game:GetService("Players"),
 	["UserInputService"] = game:GetService("UserInputService"),
-	["Player"] = game:GetService("Players").LocalPlayer
+	["Player"] = game:GetService("Players").LocalPlayer,
+	["Workspace"] = game:GetService("Workspace"),
+	["RunService"] = game:GetService("RunService"),
+	["Character"] = game.Players.LocalPlayer:WaitForChild("Character"),
+	["Humanoid"] = game.Players.LocalPlayer:WaitForChild("Character"):WaitForChild("Humanoid"),
+	["Position"] = game.Players.LocalPlayer:WaitForChild("Character"):WaitForChild("Humanoid").HumanoidRootPart.CFrame,
+	["Others"] = function()
+		local Users = {}
+
+		for _,User in pairs(game.Players) do
+			if not User.Name == game.Players.LocalPlayer.Name then
+				table.insert(Users, Users)
+			end
+		end
+
+		return Users
+	end,
+	["me"] = function(Player)
+		return Player.Name == game.Players.LocalPlayer.Name
+	end,
+	["IsThen"] = function(Obj, Table, Function)
+		for _, Value in pairs(Table) do
+			if Obj or true == Value then
+				pcall(Function)
+
+				return true
+			end
+		end
+		
+		return false
+	end,
+	["gameid"] = game.PlaceId,
 }
 
 local SoupWareV2 = Instance.new("ScreenGui")
@@ -28,13 +59,10 @@ local function IsRunning()
 	return SoupWareV2.Parent == game:GetService("CoreGui")
 end
 
-function ITEMS:AddConnection(Signal, Function)
-	if IsRunning() then
-		local SignalConnect = Signal:Connect(Function)
-		table.insert(ITEMS.Connections, SignalConnect)
+local End = {}
 
-		return SignalConnect
-	end
+function ITEMS:End(Callback)
+	table.insert(End, Callback)
 end
 
 task.spawn(function()
@@ -42,10 +70,8 @@ task.spawn(function()
 		wait()
 	end
 
-	if next(ITEMS.Connections) then
-		for _, Connection in next, ITEMS.Connections do
-			Connection:Disconnect()
-		end
+	for _, Callback in pairs(End) do
+		pcall(Callback)
 	end
 end)
 
@@ -546,6 +572,10 @@ Gui:keybind({
 	end
 })
 
+function ITEMS:Config(Callback)
+	pcall(Callback, Gui)
+end
+
 local function MouseEnterColor(frame,colorin,colorout, anotherone)
 	local main = anotherone or frame
 	frame.MouseEnter:Connect(function()
@@ -739,14 +769,12 @@ local function SetButton(settings)
 	Interface.Position = UDim2.new(Frame.Position.X.Scale + 0.52, Frame.Position.X.Offset, 0, 0)
 
 	local Frame = settings.Frame
+	settings.Saved = {}
 
 	MouseEnterColor(Frame, Color3.fromRGB(59, 59, 59), Color3.fromRGB(46, 46, 46))
 	MouseEnterColor(Frame.Frame, Color3.fromRGB(31, 31, 31),Color3.fromRGB(34, 34, 34))
 
-	local Value = Lib:toggle({
-		Name = "start on execute",
-		Default = false
-	})
+	local Value = Lib:toggle({Name = "start on execute",})
 
 	local value = Value:getvalue()
 
@@ -758,14 +786,18 @@ local function SetButton(settings)
 		pcall(settings.Callback, true)
 	end
 
+	function settings:getframe()
+		return Frame
+	end
+
 	function settings:Execute()
 		if IsRunning() then
 			if settings.toggle then
 				value = not value
 	
-				settings:set(value, true)
+				settings:set(value, true, 0.8, settings.Saved)
 			else
-				pcall(settings.Callback)
+				pcall(settings.Callback, settings.Saved)
 			end
 		end
 	end
@@ -781,13 +813,21 @@ local function SetButton(settings)
 		end
 	})
 
-	Lib:keybind({
+	local Key = Lib:keybind({
 		Name = "keybind",
-		Default = nil,
 		Callback = function() 
 			settings:Execute()
 		end
 	})
+
+	Lib:button({
+		Name = "reset keybind",
+		Callback = function()
+			Key:set(nil)
+		end
+	})
+
+	pcall(settings.settings, Lib, settings.Frame)
 
 	Frame.MouseButton1Click:Connect(function()
 		settings:Execute()
@@ -807,6 +847,8 @@ local function SetButton(settings)
 
 	return settings, value
 end
+
+local Toggles = {}
 
 --get:
 
@@ -972,8 +1014,7 @@ function ITEMS:toggle(settings)
 	for _,Obj in pairs(TransparencyObjects) do
 		Obj[ReturnProperty(Obj)] = 1
 
-		if StartInvisible:getvalue() then
-		else
+		if not StartInvisible:getvalue() then
 			if transparency then
 				TweenService:Create(Obj, TweenInfo.new(0.5), {[ReturnProperty(Obj)] = 0.5}):Play()
 			else
@@ -982,11 +1023,11 @@ function ITEMS:toggle(settings)
 		end
 	end
 
-	function settings:set(value, callback, time)
+	function settings:set(value, callback, time, Additional)
 		time = time or 0.8
 
 		if callback then
-			pcall(settings.Callback, value)
+			pcall(settings.Callback, value, Additional)
 		end
 
 		if value then
@@ -1005,9 +1046,11 @@ function ITEMS:toggle(settings)
 			}):Play()
 		end
 	end
-	
+
 	settings.Frame = Toggle
 	settings.toggle = true
+
+	table.insert(Toggles, settings.Callback)
 
 	return SetButton(settings)
 end
@@ -1075,5 +1118,49 @@ function ITEMS:GetDetail(settings)
 
 	return settings
 end
+
+--extra:
+
+function ITEMS:States(list)
+	for Name, State in pairs(list) do
+		ITEMS:toggle({
+			Name = Name,
+			Image = "body",
+			Callback = function(value)
+				State = value
+			end
+		})
+	end
+end
+
+function ITEMS:Teleport(list)
+	for Name, Cords in pairs(list) do
+		ITEMS:button({
+			Name = Name,
+			Image = "run",
+			Callback = function()
+				ITEMS.Service.Player.Character.HumanoidRootPart.CFrame = Cords
+			end
+		})
+	end
+end
+
+function ITEMS:Details(list)
+	for Name, Item in pairs(list) do
+		ITEMS:toggle({
+			Name = Name,
+			Image = "hd",
+			Callback = function(value)
+				Item:visible(value)
+			end
+		})
+	end
+end
+
+ITEMS:End(function()
+	for _, Toggle in pairs(Toggles) do
+		pcall(Toggle, false)
+	end
+end)
 
 return ITEMS
