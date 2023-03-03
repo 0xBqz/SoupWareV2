@@ -26,7 +26,7 @@ ITEMS.Service = {
 
 		for _,User in pairs(game.Players) do
 			if not User.Name == game.Players.LocalPlayer.Name then
-				table.insert(Users, Users)
+				table.insert(Users, User)
 			end
 		end
 
