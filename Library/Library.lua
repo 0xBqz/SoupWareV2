@@ -18,9 +18,9 @@ ITEMS.Service = {
 	["Player"] = game:GetService("Players").LocalPlayer,
 	["Workspace"] = game:GetService("Workspace"),
 	["RunService"] = game:GetService("RunService"),
-	["Character"] = game.Players.LocalPlayer:WaitForChild("Character"),
-	["Humanoid"] = game.Players.LocalPlayer:WaitForChild("Character"):WaitForChild("Humanoid"),
-	["Position"] = game.Players.LocalPlayer:WaitForChild("Character"):WaitForChild("Humanoid").HumanoidRootPart.CFrame,
+	["Character"] = game.Players.LocalPlayer.Character,
+	["Humanoid"] = game.Players.LocalPlayer.Character.Humanoid,
+	["Position"] = game.Players.LocalPlayer.Character.Humanoid.HumanoidRootPart.CFrame,
 	["Others"] = function()
 		local Users = {}
 
