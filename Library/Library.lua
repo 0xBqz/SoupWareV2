@@ -18,9 +18,6 @@ ITEMS.Service = {
 	["Player"] = game:GetService("Players").LocalPlayer,
 	["Workspace"] = game:GetService("Workspace"),
 	["RunService"] = game:GetService("RunService"),
-	["Character"] = game.Players.LocalPlayer.Character,
-	["Humanoid"] = game.Players.LocalPlayer.Character.Humanoid,
-	["Position"] = game.Players.LocalPlayer.Character.Humanoid.HumanoidRootPart.CFrame,
 	["Others"] = function()
 		local Users = {}
 
@@ -529,7 +526,7 @@ local moving = true
 if visible then
 	ITEMS:Visible(1, true, false)
 	if transparency then
-		ITEMS:TRANS(0.5, true, true)	
+		ITEMS:TRANS(0.5, true, true)
 	end
 end
 
@@ -1123,11 +1120,11 @@ end
 
 function ITEMS:States(list)
 	for Name, State in pairs(list) do
-		ITEMS:toggle({
+		State = ITEMS:toggle({
 			Name = Name,
 			Image = "body",
 			Callback = function(value)
-				State = value
+				pcall(State.Function, value)
 			end
 		})
 	end
